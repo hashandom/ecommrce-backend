@@ -1,30 +1,39 @@
-
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-require('dotenv').config();  // Fix: invoke config()
+require('dotenv').config();  // Ensure this is invoked correctly
 
 const connectDb = require('./config/db');
+const router = require('./routes/index');  
 
-const router  = require('./routes/index');  
-
-//using the middlewares for express framework
 const app = express();
-app.use(cors());
+
+// CORS Configuration
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true // Fixed the key name to 'credentials'
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api',router);
+// API Routes
+app.use('/api', router);
+
+// Error Handling Middleware (Optional but recommended)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 const PORT = process.env.PORT || 3000;
 
 connectDb()
-.then(()=>{
-    app.listen(PORT, () => {
-        console.log(`The server is running on port ${PORT}`);
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`The server is running on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Failed to connect to the database", error);
     });
-}).catch((error)=>{
-    console.error("Failed to connect to the database" , error)
-})
-
-
