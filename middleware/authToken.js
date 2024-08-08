@@ -7,7 +7,7 @@ const authToken = async (req, res, next) => {
       
       if(!token){
         return res.status(200).json({
-          message:"user is not login",
+          message:"please log into the system",
           error:true,
           success:false
         })
