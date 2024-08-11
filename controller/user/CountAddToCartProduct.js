@@ -1,10 +1,10 @@
-import addToCartModel from "../../models/cartProduct"
+const  addToCartModel = require('../../models/cartProduct')
 
 
 const CountAddToCartProduct =async (req,res) => {
  try{
     const userId = req?.userId
-    const count  = await addToCartModel.countDocument({
+    const count  = await addToCartModel.countDocuments({
         userId:userId
     })
     res.json({
@@ -19,7 +19,7 @@ const CountAddToCartProduct =async (req,res) => {
 
  }catch(err){
     res.json({
-        message : message.err || message,
+        message : err.message || err,
         error : true,
         success:false
     })

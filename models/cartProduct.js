@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const addToCart = mongoose.Schema({
-    ProductId : String,
+    ProductId : {
+        ref:'product',
+        type:String,
+    },
     quantity : Number,
     userId:String
     
@@ -10,6 +13,6 @@ const addToCart = mongoose.Schema({
 })
 
 
-const addToCartModel = mongoose.model("addToCartDb",addToCart)
+const addToCartModel = mongoose.model("addToCart",addToCart)
 
 module.exports = addToCartModel
